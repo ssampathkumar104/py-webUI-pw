@@ -15,3 +15,11 @@
 - Do NOT use the function-scoped monkeypatch fixture under @given (state does not reset per example); patch tiers manually and restore in finally.
 - Verified the test has teeth: reversing the cascade order produced a shrunk falsifying example (cls='0', suite='1'). Reverted.
 - .hypothesis/ example DB is gitignored.
+
+## Day 4 - Equivalence harness scaffold (task 1.6)
+
+- tests/equivalence/eq_harness.py: CheckpointRegistry (named checkpoints tagged by component + M-doc source), run_gate (go/no-go aggregation), diff_outputs/assert_equivalent (Java-vs-Python comparison).
+- Gate rule: a component gate passes only if ALL its checkpoints pass; a gate with ZERO checkpoints FAILS (existing code is not validated behaviour). A crashing checkpoint counts as a FAIL, never a harness crash.
+- First checkpoint (eq_checkpoints.py): the M2.1 parameter-precedence truth table, 9 rows, component foundation.
+- Verified the gate has teeth: reversing the cascade failed rows 1, 3 and 4 (the rows where multiple tiers compete); single-tier rows still passed. Reverted.
+- Files use an eq_ prefix and no __init__.py so pytest's rootdir import mode can import them without clashing with installed packages.
