@@ -15,8 +15,9 @@ mean a component is migrated - behaviour must be validated.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -67,7 +68,7 @@ def run_checkpoint(cp: Checkpoint) -> CheckpointResult:
         cp.func()
     except AssertionError as exc:
         return CheckpointResult(cp.name, cp.component, cp.source, False, str(exc) or "assertion failed")
-    except Exception as exc:  # a crashing checkpoint is a failing checkpoint
+    except Exception as exc:  # noqa: BLE001 - a crashing checkpoint is a failing checkpoint
         return CheckpointResult(
             cp.name, cp.component, cp.source, False, f"{type(exc).__name__}: {exc}"
         )
@@ -140,3 +141,4 @@ def assert_equivalent(java: Any, python: Any, label: str = "output") -> None:
     """Raise AssertionError listing every difference (for use inside checkpoints)."""
     diffs = diff_outputs(java, python)
     assert not diffs, f"{label} differs: " + "; ".join(diffs)
+

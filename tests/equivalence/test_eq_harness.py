@@ -1,7 +1,6 @@
 ﻿"""Tests for the equivalence harness itself (spec task 1.6)."""
 
 import pytest
-
 from eq_harness import (
     CheckpointRegistry,
     assert_equivalent,
@@ -11,11 +10,11 @@ from eq_harness import (
 
 
 def _passing():
-    assert 1 == 1
+    pass
 
 
 def _failing():
-    assert 1 == 2, "one is not two"
+    raise AssertionError("one is not two")
 
 
 def _erroring():
@@ -39,7 +38,7 @@ def test_one_failing_checkpoint_fails_the_gate_with_detail():
     reg.register("bad", "comp", "M0", _failing)
     gate = reg.run_gate("comp")
     assert not gate.passed
-    bad = [r for r in gate.results if r.name == "bad"][0]
+    bad = next(r for r in gate.results if r.name == "bad")
     assert not bad.passed
     assert "one is not two" in bad.detail
 
@@ -123,3 +122,4 @@ def test_assert_equivalent_raises_with_all_differences():
     message = str(exc.value)
     assert "report differs" in message
     assert "$.a" in message and "$.b" in message
+

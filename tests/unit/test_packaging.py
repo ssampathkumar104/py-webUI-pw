@@ -8,6 +8,7 @@ import importlib
 
 import ita_pw
 
+
 def test_ita_pw_is_importable():
     """The package installs and imports (proves the build + install contract)."""
     assert ita_pw is not None

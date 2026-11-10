@@ -73,5 +73,5 @@ def get_parameter(key: str, default: str | None = None) -> str | None:
             if not _is_blank(candidate):
                 return candidate
         return default
-    except Exception: # fail-soft, matching the Java try/catch -> null
+    except Exception:    # noqa: BLE001 - fail-soft, matches Java try/catch -> null
         return default
